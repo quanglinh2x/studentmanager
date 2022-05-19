@@ -68,6 +68,15 @@ function App() {
 
   const handleAdd = () => {
     
+    if(state.surnameInput==''||state.nameInput==''||state.phoneInput==''||state.emailInput==''||state.addressInput==''||
+    state.frameworkInput==[]
+    
+    
+    ){
+      alert('vui lòng nhập đầy đủ ')
+    
+  }
+  else{
     
     dispatch(actions.addStudent({
       surname : surnameInput,
@@ -79,24 +88,25 @@ function App() {
       sex : sexInput,
       framework : frameworkInput,
     }))
-
+    
     // dispatch(actions.addStudent(surnameInput))
     state.surnameInput = ''
     state.nameInput = ''
     state.phoneInput = ''
-    state.ageInput = ''
+    document.querySelector('.file').value=''
     state.emailInput = ''
     state.addressInput = ''
     state.sexInput = 1
     
     state.frameworkInput = ''
     firstRef.current.focus()
-  }
+  }}
 
   const handleEdit = (index) => {
-    console.log(students[index])
-    console.log(students[index].surname)
+    
+    
     dispatch(actions.setNameInput(students[index].name))
+    
     dispatch(actions.setSurnameInput(students[index].surname))
     dispatch(actions.setPhoneInput(students[index].phone))
     dispatch(actions.setEmailInput(students[index].email))
@@ -106,27 +116,32 @@ function App() {
     
     setIsedit(true)
     setIdedit(index)
-    console.log(isEdit)
+    
     firstRef.current.focus()
 
   }
 
   const handleSave = () => {
+    if(state.surnameInput==''||state.nameInput==''||state.phoneInput==''||state.emailInput==''||state.addressInput==''||
+    state.frameworkInput==[]
+
+    ){
+      alert('vui lòng không bỏ trống ')
+  }else{
     dispatch(actions.editStudent(
-    {
-      stt : idedit,
-      replaceStudent : {
+      {
+
+        stt:idedit,
         surname : surnameInput,
         name : nameInput,
         phone : phoneInput,
-     
         email : emailInput,
         address : addressInput,
         sex : sexInput,
         framework : frameworkInput,
       }
-      
-    }))
+    ))
+    
     setIsedit(false)
     state.surnameInput = ''
     state.nameInput = ''
@@ -138,7 +153,8 @@ function App() {
     state.frameworkInput = ''
     firstRef.current.focus()
 
-  }
+  }}
+  
 
   const handleCancel = () => {
     setIsedit(false)
@@ -171,7 +187,7 @@ function App() {
         <div className="title">
           <h2>Quản lý học sinh</h2>
           <h2>Quản lý sinh viên cùng khóa</h2>
-          <img src="../../learn.png"/>
+          <img src="./learn.png"/>
         </div>
         
         <div className="container">
@@ -270,7 +286,7 @@ function App() {
                         <input 
                         id={`cb-${framework.id}`}
                         type="checkbox"
-                        checked = {frameworkInput.includes(framework.name)}
+                        checked = {frameworkInput&&frameworkInput.includes(framework.name)}
                         onChange={() => handleCheck(framework.name)}
                       ></input>
                       <label htmlFor={`cb-${framework.id}`}>{framework.name}</label>
@@ -331,12 +347,12 @@ function App() {
         </div>
         <div className="table-body">
           {students.map((student,index) => (
-            
+               
                 <div className="table-body-wrapper">
                   <span>{(index + 1 )}</span>
                   <span>{ avataInput && (
                         <img key={index}
-                            src={avataInput[index].preview} alt="" width="80%"
+                            src={avataInput[index]!=undefined ? avataInput[index].preview :[]} alt="" width="80%"
                         />
                         )
                     }
@@ -348,7 +364,7 @@ function App() {
                   <span>{student.email}</span>
                   <span>{student.address}</span>
                   <span>{(student.sex === 1) ? 'Nam' : (student.sex === 2) ? 'Nữ' : 'Khác'}</span>
-                  <span>{student.framework.join(', ')}</span>
+                  <span>{student.framework&&student.framework.join(', ')}</span>
                   {/* <span>{(student.framework.includes(1,2,3)) ? 'ReacJS, VueJS, Angular' : 
                        (student.framework.includes(2)) ? 'VueJS' :
                        (student.framework.includes(3)) ? 'Angular' : 'No'}</span> */}
